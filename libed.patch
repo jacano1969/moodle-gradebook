@@ -1,0 +1,13 @@
+--- lib.php	2012-08-02 14:37:53.000000000 +0500
++++ libupd.php	2012-08-02 23:12:07.000000000 +0500
+@@ -2406,7 +2406,9 @@
+         if ($canmanage || $canmanageletters) {
+             self::$letterinfo = array(
+                 'view' => new grade_plugin_info('view', new moodle_url('/grade/edit/letter/index.php', array('id'=>$context->id)), get_string('view')),
+-                'edit' => new grade_plugin_info('edit', new moodle_url('/grade/edit/letter/index.php', array('edit'=>1,'id'=>$context->id)), get_string('edit'))
++                'edit' => new grade_plugin_info('edit', new moodle_url('/grade/edit/letter/index.php', array('edit'=>1,'id'=>$context->id)), get_string('edit')),
++            	'graph' => new grade_plugin_info('graph', new moodle_url('/grade/edit/graph/index.php', array('cid1'=>$courseid)), "Graph")///Added By Hina Yousuf on 19-6-2012
++ 
+             );
+         } else {
+             self::$letterinfo = false;

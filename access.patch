@@ -1,0 +1,20 @@
+--- grade/report/grader/db/access.php	2012-08-03 08:34:48.933441246 +0500
++++ grade/report/grader/db/access.php	2012-06-27 09:49:30.475679049 +0500
+@@ -26,6 +26,17 @@ $capabilities = array(
+             'editingteacher' => CAP_ALLOW,
+             'manager' => CAP_ALLOW
+         )
++    ),
++    
++    'gradereport/grader:unlock' => array(      
++        'captype' => 'read',
++        'contextlevel' => CONTEXT_COURSE,
++        'archetypes' => array(
++            'teacher' => CAP_PREVENT,
++            'editingteacher' => CAP_PREVENT,
++            'manager' => CAP_PREVENT,
++    		'dean' => CAP_ALLOW
++        )
+     )
+ );
+ 

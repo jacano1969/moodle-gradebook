@@ -1,0 +1,24 @@
+--- grade/export/xls/grade_export_xls.php	2012-11-05 15:52:52.545952034 +0500
++++ grade/export/xls/grade_export_xls.php	2012-11-05 15:52:57.582955389 +0500
+@@ -82,9 +82,19 @@ class grade_export_xls extends grade_exp
+                     $status = $geub->track($grade);
+                 }
+ 
+-                
++                $gradestr = $this->format_grade($grade);
++		$gradez=$DB->get_record_sql("Select * from {grade_items} where id=$itemid");
++
++                if (is_numeric($gradestr)) {
++                    $myxls->write_number($i,$j++,$gradestr);
++		    if($gradez->itemtype=="course"){
++						$subjgrade=grade_format_gradevalue_letter($gradestr, $gradez);
++						$myxls->write_string($i,$j++,$subjgrade);
++					}
++                }
++                else {
+                     $myxls->write_string($i,$j++,$gradestr);
+-                
++                }
+ 
+                 // writing feedback if requested
+                 if ($this->export_feedback) {

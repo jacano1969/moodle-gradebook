@@ -1,0 +1,50 @@
+--- index.php	2012-08-02 14:37:52.000000000 +0500
++++ indexupd.php	2012-08-02 23:20:27.000000000 +0500
+@@ -35,7 +35,13 @@
+ 
+ list($context, $course, $cm) = get_context_info_array($contextid);
+ $contextid = null;//now we have a context object throw away the $contextid from the params
++///Added By Hina Yousuf //No D grade for masters category
++$cat=$DB->get_record_sql("select path from {course_categories} where id=(SELECT category from {course} where id=$course->id)");
++$path=explode("/", $cat->path);
++$paths="/".$path[1]."/".$path[2];
++$program=$DB->get_record_sql("select name from {course_categories} where path='$paths'");
+ 
++///end
+ //if viewing
+ if (!$edit) {
+     if (!has_capability('moodle/grade:manage', $context) and !has_capability('moodle/grade:manageletters', $context)) {
+@@ -75,6 +81,9 @@
+ $pagename  = get_string('letters', 'grades');
+ 
+ $letters = grade_get_letters($context);
++if($program->name=="Postgraduate Programs"){
++	$letters = array_diff($letters, array('D'));//Added By Hina Yousuf
++}
+ $num = count($letters) + 3;
+ 
+ //if were viewing the letters
+@@ -85,11 +94,11 @@
+     $max = 100;
+     foreach($letters as $boundary=>$letter) {
+         $line = array();
+-        $line[] = format_float($max,2).' %';
+-        $line[] = format_float($boundary,2).' %';
++        $line[] = format_float($boundary,0).' %';
++        $line[] = format_float($max,0).' %';
+         $line[] = format_string($letter);
+         $data[] = $line;
+-        $max = $boundary - 0.01;
++        $max = $boundary - 1;
+     }
+ 
+     print_grade_page_head($COURSE->id, 'letter', 'view', get_string('gradeletters', 'grades'));
+@@ -99,7 +108,7 @@
+     echo $editlink;
+ 
+     $table = new html_table();
+-    $table->head  = array(get_string('max', 'grades'), get_string('min', 'grades'), get_string('letter', 'grades'));
++    $table->head  = array(get_string('min', 'grades'), get_string('max', 'grades'), get_string('letter', 'grades'));
+     $table->size  = array('30%', '30%', '40%');
+     $table->align = array('left', 'left', 'left');
+     $table->width = '30%';

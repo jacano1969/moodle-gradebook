@@ -1,0 +1,31 @@
+--- grade/report/grader/lib.php	2012-08-02 14:37:53.000000000 +0500
++++ grade/report/grader/lib.php	2012-08-02 23:39:12.000000000 +0500
+@@ -981,7 +981,12 @@
+                                           . '" type="text" class="text" title="'. $strgrade .'" name="grade_'
+                                           .$userid.'_' .$item->id.'" id="grade_'.$userid.'_'.$item->id.'" value="'.$value.'" />';
+                         } else {
+-                            $itemcell->text .= html_writer::tag('span', format_float($gradeval, $decimalpoints), array('class'=>"gradevalue$hidden$gradepass"));
++                        	if($grade->is_locked())
++							$itemcell->text .=html_writer::tag('span', format_float($gradeval, $decimalpoints), array('class'=>""));
++							else
++							$itemcell->text .=html_writer::tag('span', format_float($gradeval, $decimalpoints), array('class'=>"gradevalue$hidden$gradepass"));
++						
++                           // $itemcell->text .= html_writer::tag('span', format_float($gradeval, $decimalpoints), array('class'=>"gradevalue$hidden$gradepass"));
+                         }
+                     }
+ 
+@@ -1010,7 +1015,13 @@
+                     if ($item->needsupdate) {
+                         $itemcell->text .= html_writer::tag('span', get_string('error'), array('class'=>"gradingerror$hidden$gradepass"));
+                     } else {
+-                        $itemcell->text .= html_writer::tag('span', grade_format_gradevalue($gradeval, $item, true, $gradedisplaytype, null), array('class'=>"gradevalue$hidden$gradepass"));
++                    if($grade->is_locked()){
++							$itemcell->text .= html_writer::tag('span', grade_format_gradevalue($gradeval, $item, true, $gradedisplaytype, null), array('class'=>""));
++						}
++						else{
++							$itemcell->text .=html_writer::tag('span', grade_format_gradevalue($gradeval, $item, true, $gradedisplaytype, null), array('class'=>"gradevalue$hidden$gradepass"));							
++						}
++                        //$itemcell->text .= html_writer::tag('span', grade_format_gradevalue($gradeval, $item, true, $gradedisplaytype, null), array('class'=>"gradevalue$hidden$gradepass"));
+                     }
+                 }
+ 
